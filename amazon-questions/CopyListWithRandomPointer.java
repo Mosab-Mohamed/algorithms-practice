@@ -17,28 +17,17 @@ class Node {
 };
 */
 class Solution {
-  
-    HashMap<Node, Node> map = new HashMap<Node, Node>();
-    
-    public Node copy(Node head) {
+    public Node copy(Node head, HashMap<Node, Node> map) {
         if(head == null) return null;
         
         Node newNode = new Node(head.val, null, null);
-        newNode.next = copy(head.next);
         map.put(head, newNode);
+        newNode.next = copy(head.next, map);
+        newNode.random = map.get(head.random);
         return newNode;
     }
 
     public Node copyRandomList(Node head) {
-        Node newHead = copy(head);
-        Node ans = newHead;
-        
-        while(newHead!=null){
-            newHead.random = map.get(head.random);
-            newHead = newHead.next;
-            head = head.next;
-        }
-        
-        return ans;
+        return copy(head, new HashMap<Node, Node>());
     }
 }
